@@ -55,14 +55,8 @@ stages:
       displayName: Restore Nuget Packages
       inputs:
         command: restore
-        projects: '**/WebApp.csproj'
-    
-    - task: mend@22
-      displayName: Scan Nuget Packages
-      enabled: ${{ parameters.runCompletePipeline }}
-      inputs:
-        cwd: '$(System.DefaultWorkingDirectory)'
-    
+        projects: '**/WebApp.csproj'    
+   
     - task: PowerShell@2
       displayName: Prepare for Sonar Cloud
       enabled: ${{ parameters.runCompletePipeline }}
