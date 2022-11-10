@@ -181,7 +181,7 @@ stages:
   displayName: Create & Deploy to Dev
   dependsOn: Build_Stage
   variables:
-    azureSubscription: 'WebAppWithDatabaseDemo_spn' # couldn't be referenced
+    azureSubscription: 'Free Trial'
     ResourceGroupName: '$(Prefix)-$(Release.EnvironmentName)-$(UniqueId)-RG'
     Database.Admin: 'houssem'
     Database.Password: '@Aa123456' # to be secured in Key Vault
@@ -212,7 +212,7 @@ stages:
       displayName: Validate ARM templates
       enabled: ${{ parameters.runCompletePipeline }}
       inputs:
-        azureSubscription: 'WebAppWithDatabaseDemo_spn'
+        azureSubscription: 'Free Trial'
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(ResourceGroupName)'
         location: 'West Europe'
@@ -254,7 +254,7 @@ stages:
       displayName: Preview Template Changes (What-If)
       inputs:
         workingDirectory: $(System.DefaultWorkingDirectory)/arm/
-        azureSubscription: 'WebAppWithDatabaseDemo_spn'
+        azureSubscription: 'Free Trial'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az deployment group what-if --resource-group $(ResourceGroupName) --name rollout01 --template-file  WebSiteSQLDatabase.json --parameters WebSiteSQLDatabase.parameters.json'
@@ -265,7 +265,7 @@ stages:
       inputs:
         deploymentScope: 'Resource Group'
         azureResourceManagerConnection: 'WebAppWithDatabaseDemo_spn'
-        subscriptionId: '4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3'
+        subscriptionId: '36c5264b-3f9e-436b-9076-bd94b539bc0a'
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(ResourceGroupName)'
         location: 'West Europe'
@@ -283,7 +283,7 @@ stages:
         ConnectedServiceNameARM: 'WebAppWithDatabaseDemo_spn'
         GenerateMethodParameterSetSelection: 'ResourceGroupName'
         ResourceGroupName: '$(ResourceGroupName)'
-        SubscriptionId: '4b72ed90-7ca3-4e76-8d0f-31a2c0bee7a3'
+        SubscriptionId: '36c5264b-3f9e-436b-9076-bd94b539bc0a'
         EnableGSSscan: true
 
   - job: Deploy_DEV
@@ -307,7 +307,7 @@ stages:
     - task: AzureRmWebAppDeployment@3
       displayName: Deploy WebApp to Azure
       inputs:
-        azureSubscription: 'WebAppWithDatabaseDemo_spn'
+        azureSubscription: 'Free Trial'
         appType: 'app'
         WebAppName: '$(WebAppName)'
         Package: '$(System.DefaultWorkingDirectory)/drop/WebApp.zip'
@@ -326,7 +326,7 @@ stages:
     - task: SqlAzureDacpacDeployment@1
       displayName: Deploy DacPac to SQL Azure
       inputs:
-        azureSubscription: 'WebAppWithDatabaseDemo_spn'
+        azureSubscription: 'Free Trial'
         AuthenticationType: 'server'
         ServerName: '$(SqlServerName).database.windows.net,1433'
         DatabaseName: '$(Database.Name)'
