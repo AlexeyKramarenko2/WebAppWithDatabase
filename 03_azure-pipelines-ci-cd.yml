@@ -38,7 +38,12 @@ stages:
     variables:
       BuildConfiguration: release
     steps:
-
+    
+    - task: UseDotNet@2
+      displayName: 'Install .Net Core sdk 2.1.x (needed for sonar scanner)'
+      inputs:
+        version: 2.1.x
+    
     - task: UseDotNet@2
       displayName: Install .NET 6 sdk
       inputs:
