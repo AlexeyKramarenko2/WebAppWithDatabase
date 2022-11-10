@@ -82,7 +82,7 @@ stages:
       enabled: ${{ parameters.runCompletePipeline }}
       inputs:
         SonarCloud: SonarCloud
-        organization: houssemdellai
+        organization: AlexeyKramarenko2
         projectKey: WebAppWithDatabaseDemo
 
     - task: DotNetCoreCLI@2
