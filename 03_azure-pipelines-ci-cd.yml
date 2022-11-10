@@ -208,19 +208,19 @@ stages:
         artifactName: arm
         downloadPath: $(System.DefaultWorkingDirectory)
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: Validate ARM templates
-      enabled: ${{ parameters.runCompletePipeline }}
-      inputs:
-        azureSubscription: 'Free Trial'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(ResourceGroupName)'
-        location: 'West Europe'
-        templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.parameters.json'
-        overrideParameters: '-hostingPlanName $(hostingPlanName) -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
-        deploymentMode: 'Validation'
+    #- task: AzureResourceGroupDeployment@2
+     # displayName: Validate ARM templates
+    #  enabled: ${{ parameters.runCompletePipeline }}
+    #  inputs:
+    #    azureSubscription: 'Free Trial'
+    #    action: 'Create Or Update Resource Group'
+    #    resourceGroupName: '$(ResourceGroupName)'
+    #    location: 'West Europe'
+    #    templateLocation: 'Linked artifact'
+    #    csmFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.json'
+    #    csmParametersFile: '$(System.DefaultWorkingDirectory)/arm/WebSiteSQLDatabase.parameters.json'
+    #    overrideParameters: '-hostingPlanName $(hostingPlanName) -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
+    #    deploymentMode: 'Validation'
 
     - task: AzSKARMTemplateChecker@4
       displayName: Scan ARM templates using AzSK
@@ -250,15 +250,15 @@ stages:
         testResultsFiles: '$(System.DefaultWorkingDirectory)\arm\results\*-armttk.xml'
       condition: always()
 
-    - task: AzureCLI@2
-      displayName: Preview Template Changes (What-If)
-      inputs:
-        workingDirectory: $(System.DefaultWorkingDirectory)/arm/
-        azureSubscription: 'Free Trial'
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: 'az deployment group what-if --resource-group $(ResourceGroupName) --name rollout01 --template-file  WebSiteSQLDatabase.json --parameters WebSiteSQLDatabase.parameters.json'
-        arguments: '-hostingPlanName $(hostingPlanName) -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
+ #  - task: AzureCLI@2
+   #   displayName: Preview Template Changes (What-If)
+   #   inputs:
+   #     workingDirectory: $(System.DefaultWorkingDirectory)/arm/
+   #     azureSubscription: 'Free Trial'
+  #      scriptType: 'bash'
+  #      scriptLocation: 'inlineScript'
+  #      inlineScript: 'az deployment group what-if --resource-group $(ResourceGroupName) --name rollout01 --template-file  WebSiteSQLDatabase.json --parameters WebSiteSQLDatabase.parameters.json'
+  #      arguments: '-hostingPlanName $(hostingPlanName) -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
 
     - task: AzureResourceManagerTemplateDeployment@3
       displayName: Deploy ARM templates
@@ -323,19 +323,20 @@ stages:
         itemPattern: '**/*.dacpac'
         downloadPath: '$(System.DefaultWorkingDirectory)'
 
-    - task: SqlAzureDacpacDeployment@1
-      displayName: Deploy DacPac to SQL Azure
-      inputs:
-        azureSubscription: 'Free Trial'
-        AuthenticationType: 'server'
-        ServerName: '$(SqlServerName).database.windows.net,1433'
-        DatabaseName: '$(Database.Name)'
-        SqlUsername: '$(Database.Admin)'
-        SqlPassword: '$(Database.Password)'
-        deployType: 'DacpacTask'
-        DeploymentAction: 'Publish'
-        DacpacFile: '$(System.DefaultWorkingDirectory)/dacpac/WebApp.Database.dacpac'
-        IpDetectionMethod: 'AutoDetect'
+#    - task: SqlAzureDacpacDeployment@1
+#      displayName: Deploy DacPac to SQL Azure
+#      inputs:
+#        azureSubscription: 'Free Trial'
+#        AuthenticationType: 'server'
+#        ServerName: '$(SqlServerName).database.windows.net,1433'
+#        DatabaseName: '$(Database.Name)'
+#        SqlUsername: '$(Database.Admin)'
+#        SqlPassword: '$(Database.Password)'
+#        deployType: 'DacpacTask'
+#        DeploymentAction: 'Publish'
+#        DacpacFile: '$(System.DefaultWorkingDirectory)/dacpac/WebApp.Database.dacpac'
+#        IpDetectionMethod: 'AutoDetect'
+        
 # new JOB: Selenium
   - job: Test_DEV
     displayName: Run Selenium tests in DEV
